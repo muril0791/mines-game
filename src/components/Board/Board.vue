@@ -8,9 +8,14 @@
         @click="revealCell(cell)"
         :class="{ revealed: cell.revealed, mine: gameEnded && cell.hasMine }"
       >
-        <div v-if="cell.revealed">
-          <img v-if="cell.hasMine" :src="mineImage" alt="Mine" class="image" />
-          <img v-else :src="gemImage" alt="Gem" class="image" />
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <!-- Conteúdo da frente do cartão -->
+          </div>
+          <div class="flip-card-back">
+            <img v-if="cell.hasMine" :src="mineImage" alt="Mine" class="image" />
+            <img v-else :src="gemImage" alt="Gem" class="image" />
+          </div>
         </div>
       </div>
     </div>
@@ -56,23 +61,41 @@ export default {
   background-image: url('@/assets/cardBack.png');
   background-size: cover;
   width: 100%;
-  aspect-ratio: 1 / 1; /* This ensures that the cell is always a square */
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  perspective: 1000px; /* Adicionado para efeito 3D */
 }
 
-.cell.revealed {
-  background-color: #bbb;
+.cell.revealed .flip-card-inner {
+  transform: rotateY(180deg);
 }
 
-.cell.mine {
-  background-color: red;
+.flip-card-inner {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
 }
 
 .image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Adicionado para garantir que a imagem ocupe toda a área */
 }
 </style>

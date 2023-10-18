@@ -1,33 +1,40 @@
 export default {
-    data() {
-      return {
-        wallet: 1000.0,
-        bet: (0.1).toFixed(2),
-        mines: 2,
-        board: [],
-        gameStarted: false,
-        gameEnded: false,
-        win: false,
-        currentWinnings: 0.0,
-        mineImage: require("@/assets/mine.png"),
-        gemImage: require("@/assets/gem.png"),
-      };
-    },
- 
-    mounted() {
+  data() {
+    return {
+      wallet: 1000.0,
+      bet: 1,
+      mines: 2,
+      board: [],
+      gameStarted: false,
+      gameEnded: false,
+      win: false,
+      currentWinnings: 0.0,
+      mineImage: require("@/assets/mine.png"),
+      gemImage: require("@/assets/gem.png"),
+      drawer: false, 
+    };
+  },
+
+  mounted() {
+    this.resetGame();
+  },
+
+  methods: {
+    startGame(localBet, localMines) {
+      if (localBet > this.wallet || localBet < 1 || localBet > 500 || !Number.isInteger(localBet)) {
+        alert("Aposta inválida. Por favor, insira um valor entre 1 e 500.");
+        return;
+      }
+      if (localMines < 2 || localMines > 24 || !Number.isInteger(localMines)) {
+        alert("Número de minas inválido. Por favor, insira um valor entre 2 e 24.");
+        return;
+      }
+      this.bet = localBet;
+      this.mines = localMines;
+      this.wallet -= this.bet;
+      this.gameStarted = true;
       this.generateBoard();
     },
-    methods: {
-      startGame() {
-        if (this.bet > this.wallet) {
-          alert("Saldo insuficiente para esta aposta.");
-          return;
-        }
- 
-        this.wallet -= this.bet;
-        this.gameStarted = true;
-        this.generateBoard();
-      },
       generateBoard() {
         this.board = [];
         for (let i = 0; i < 5; i++) {
@@ -68,10 +75,12 @@ export default {
         }
       },
       cashOut() {
-        this.wallet += this.currentWinnings;
-        this.gameEnded = true;
-        this.win = true;
+        this.wallet += this.currentWinnings;  
+        this.currentWinnings = 0;  
+        this.gameEnded = true;  
+        this.win = true; 
       },
+  
       resetGame() {
         this.gameStarted = false;
         this.gameEnded = false;
