@@ -1,40 +1,20 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="12" md="6" lg="5">
-      <div class="board">
-        <v-row v-for="row in board" :key="row.id">
-          <v-col
-            v-for="cell in row.cells"
-            :key="cell.id"
-            cols="12"
-            sm="4"
-            md="2"
-            lg="2"
-          >
-            <v-card
-              block
-              :disabled="cell.revealed || !gameStarted"
-              :class="{
-                mine: gameEnded && cell.hasMine,
-                flipped: cell.revealed,
-              }"
-              @click="revealCell(cell)"
-            >
-              <div class="flip-card-inner">
-                <div class="flip-card-front">
-                  <v-img :src="cardBackImage"></v-img>
-                </div>
-                <div class="flip-card-back">
-                  <v-img v-if="cell.hasMine" :src="mineImage"></v-img>
-                  <v-img v-else :src="gemImage"></v-img>
-                </div>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
+  <div class="board">
+    <div v-for="(row, rowIndex) in board" :key="rowIndex" class="row">
+      <div
+        v-for="(cell, cellIndex) in row.cells"
+        :key="cellIndex"
+        class="cell"
+        @click="revealCell(cell)"
+        :class="{ revealed: cell.revealed, mine: gameEnded && cell.hasMine }"
+      >
+        <div v-if="cell.revealed">
+          <img v-if="cell.hasMine" :src="mineImage" alt="Mine" class="image" />
+          <img v-else :src="gemImage" alt="Gem" class="image" />
+        </div>
       </div>
-    </v-col>
-  </v-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +33,6 @@ export default {
     return {
       mineImage: require("@/assets/mine.png"),
       gemImage: require("@/assets/gem.png"),
-      cardBackImage: require("@/assets/cardBack.png"),
     };
   },
 };
@@ -61,64 +40,39 @@ export default {
 
 <style scoped>
 .board {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(5vw, 100px));
+  gap: 10px;
   justify-content: center;
+  margin: auto;
+  padding: 20px;
+}
+
+.row {
+  display: contents;
+}
+
+.cell {
+  background-image: url('@/assets/cardBack.png');
+  background-size: cover;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* This ensures that the cell is always a square */
+  display: flex;
   align-items: center;
-  /* height: 100vh; */
+  justify-content: center;
+  cursor: pointer;
 }
 
-.v-card {
-  max-width: 100px;
-  max-height: 100px;
-  width: auto;
-  height: auto;
-  min-width: 60px;
-  min-height: 60px;
-  flex-grow: 1;
+.cell.revealed {
+  background-color: #bbb;
 }
 
-@media (max-width: 600px) {
-  .v-card {
-    max-width: 60px;
-    max-height: 60px;
-  }
+.cell.mine {
+  background-color: red;
 }
 
-.flip-card {
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
-}
-
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s; /* Movendo a transição para este elemento */
-}
-
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.flip-card-front {
-  z-index: 2;
-  transform: rotateY(0deg);
-}
-
-.flipped .flip-card-front {
-  transform: rotateY(180deg); /* Oculte a frente quando virado */
-}
-
-.flip-card-back {
-  transform: rotateY(180deg);
-}
-
-.flipped .flip-card-back {
-  transform: rotateY(360deg); /* Mostre a parte de trás quando virado */
+.image {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>
