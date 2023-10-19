@@ -1,7 +1,6 @@
 <template>
   <v-app class="v-app">
     <v-navigation-drawer app v-model="drawer" temporary>
-      
       <v-list>
         <v-list-item-group>
           <v-list-item>
@@ -26,7 +25,7 @@
       <!-- <v-img  src="@/assets/logo.png" width="50px" height="50px"></v-img> -->
       <div>seu logo</div>
       <v-spacer></v-spacer>
-      <div class="wallet">Saldo Atual: R$ {{ wallet.toFixed(2) }}</div>
+      <div class="wallet">Saldo R$ {{ wallet.toFixed(2) }}</div>
     </v-app-bar>
 
     <v-main>
@@ -41,6 +40,7 @@
         @cashOut="cashOut" 
         @reset="resetGame" 
       />
+     <ResultPopup :show="showPopup" :win="win" :amountWon="currentWinnings" :autoWin="autoWin" @close="closePopup" />
     </v-main>
   </v-app>
 </template>
@@ -49,55 +49,63 @@
 import Board from './components/Board/Board.vue';
 import BettingArea from './components/betting-area/betting-area.vue';
 import AppLogic from './AppLogic.js';
+import ResultPopup from './components/ResultPopup.vue';
 
 export default {
   ...AppLogic,
   components: {
     Board,
-    BettingArea
+    BettingArea,
+    ResultPopup,
   },
 };
 </script>
 
 <style scoped>
-.v-app{
-  background-color: rgb(126, 126, 126);
-}
-.v-app-bar {
-  background-color: #1976D2 !important; 
-  color: white; 
+.v-app {
+  background-color: #1976D2;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.logo {
-   background-image: url('@/assets/logo.png');
-   width: auto;
-   height: auto;
+.v-app-bar {
+  background-color: #0D47A1 !important;
+  color: white;
 }
 
 .wallet {
-  font-size: 18px;
+  font-size: 14px;
+  color: white;
+  background-color: #636363;
+  border: #0D47A1;
+  border-radius: 20px;
+  padding: 8px;
 }
 
 .v-navigation-drawer {
-  background-color: #f8f9fa; 
+  background-color: #BBDEFB;
 }
 
 .v-list-item {
-  color: #333;  
+  color: #333;
 }
 
 .v-list-item-group {
-  border-top: 1px solid #ddd;  
+  border-top: 1px solid #ddd;
 }
-
 
 .v-app-bar-nav-icon {
   font-size: 24px;
   cursor: pointer;
 }
 
-
 .v-main {
-  padding: 20px;  
+  padding: 20px;
+  background-color: #778794;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 </style>
+

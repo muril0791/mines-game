@@ -1,6 +1,6 @@
 <template>
-  <div justify="center">
-    <div v-if="!gameStarted" class="betting-area">
+  <v-row justify="center" class="ma-2">
+    <v-col v-if="!gameStarted" cols="12" sm="8" md="6">
       <v-text-field
         v-model="localBet"
         label="Aposta"
@@ -8,6 +8,7 @@
         :min="1"
         :max="500"
         :step="1"
+        class="mb-2"
       ></v-text-field>
       <v-text-field
         v-model="localMines"
@@ -15,22 +16,24 @@
         type="number"
         :min="2"
         :max="24"
+        class="mb-2"
       ></v-text-field>
       <v-btn block @click="start">Começar o jogo</v-btn>
-    </div>
+    </v-col>
 
-    <div v-if="gameStarted" class="betting-area">
+    <v-col v-if="gameStarted" cols="12" sm="8" md="6">
       <v-btn block @click="cashOutHandler">
         Retirar R$ {{ currentWinnings.toFixed(2) }}
       </v-btn>
-    </div>
+    </v-col>
 
-    <div v-if="gameEnded">
+    <v-col v-if="gameEnded" cols="12" sm="8" md="6">
       {{ win ? "Você ganhou!" : "Você perdeu!" }}
       <v-btn block @click="resetHandler">Jogar novamente</v-btn>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
+
 
 <script>
 export default {
@@ -78,10 +81,6 @@ export default {
 
 <style scoped>
 .betting-area {
-  display: grid;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin-top: 20px;
 }
 
