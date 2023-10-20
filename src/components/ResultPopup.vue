@@ -12,58 +12,62 @@
 </template>
 
 <script>
-
 export default {
     props: {
-    show: {
-      type: Boolean,
-      default: false,
+        show: {
+            type: Boolean,
+            default: false,
+        },
+        win: {
+            type: Boolean,
+            default: false,
+        },
+        amountWon: {
+            type: Number,
+            default: 0,
+        },
+        autoWin: {
+            type: Boolean,
+            default: false,
+        },
     },
-    win: {
-      type: Boolean,
-      default: false,
+    computed: {
+        title() {
+            if (this.win) return 'Parabéns!';
+            return 'Que pena!';
+        },
+        message() {
+            if (this.win) {
+                return `Você ganhou R$${this.amountWon.toFixed(2)}`;
+            }
+            return 'Você perdeu. Tente novamente.';
+        },
+        resultClass() {
+            if (this.win) {
+                return this.autoWin ? 'success-auto' : 'success';
+            }
+            return 'failure';
+        }
     },
-    amountWon: {
-      type: Number,
-      default: 0,
+    methods: {
+        close() {
+            this.$emit('close');
+        },
     },
-    autoWin: {
-      type: Boolean,
-      default: false,
+    watch: {
+        show(newVal) {
+            console.log('show changed', newVal);  // Debug log
+            if (newVal) {
+                setTimeout(() => {
+                    this.$emit('close');
+                }, 5000);  // Fechar o popup após 5 segundos
+            }
+        },
     },
-  },
-  watch: { 
-    show(newVal) {
-      console.log('show changed', newVal);  // Debug log
-    },
-  },
-  
-  computed: {
-    title() {
-      if (this.win) return 'Parabéns!';
-      return 'Que pena!';
-    },
-    
-    message() {
-      if (this.win) {
-        return `Você ganhou R$${this.amountWon.toFixed(2)}`;
-      }
-      return 'Você perdeu. Tente novamente.';
-    },
-    resultClass() {
-      if (this.win) {
-        return this.autoWin ? 'success-auto' : 'success';
-      }
-      return 'failure';
-    }
-  },
-  methods: {
-    close() {
-      this.$emit('close');
-    },
-  },
 };
 </script>
+
+
 
 <style scoped>
 .success {

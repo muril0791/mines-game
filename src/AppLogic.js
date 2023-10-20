@@ -116,6 +116,7 @@ export default {
       this.wallet += this.currentWinnings;
       this.gameEnded = true;
       this.win = true;
+      console.log('Win:', this.win);  // Log de depuração
     },
 
     resetGame() {

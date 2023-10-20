@@ -15,7 +15,6 @@
           <v-list-item>
             <v-list-item-title>Game Functions</v-list-item-title>
           </v-list-item>
-        
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -29,27 +28,34 @@
     </v-app-bar>
 
     <v-main>
-      <Board :board="board" :gameStarted="gameStarted" :gameEnded="gameEnded" @reveal="revealCell" />
-      <BettingArea 
-        :gameStarted="gameStarted" 
-        :gameEnded="gameEnded" 
-        :currentWinnings="currentWinnings" 
-        :bet="bet" 
-        :mines="mines" 
-        @startGame="startGame" 
-        @cashOut="cashOut" 
-        @reset="resetGame" 
+      <Board
+        :board="board"
+        :gameStarted="gameStarted"
+        :gameEnded="gameEnded"
+        @reveal="revealCell"
       />
-     <ResultPopup :show="showPopup" :win="win" :amountWon="currentWinnings" :autoWin="autoWin" @close="closePopup" />
+      <!-- Em App.vue -->
+      <BettingArea
+        :win="win"
+        :gameStarted="gameStarted"
+        :gameEnded="gameEnded"
+        :currentWinnings="currentWinnings"
+        :bet="bet"
+        :mines="mines"
+        @startGame="startGame"
+        @cashOut="cashOut"
+        @reset="resetGame"
+      />
+    <ResultPopup :show="gameEnded" :win="win" :amountWon="currentWinnings" @close="handleClose" />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Board from './components/Board/Board.vue';
-import BettingArea from './components/betting-area/betting-area.vue';
-import AppLogic from './AppLogic.js';
-import ResultPopup from './components/ResultPopup.vue';
+import Board from "./components/Board/Board.vue";
+import BettingArea from "./components/betting-area/betting-area.vue";
+import AppLogic from "./AppLogic.js";
+import ResultPopup from "./components/ResultPopup.vue";
 
 export default {
   ...AppLogic,
@@ -58,19 +64,25 @@ export default {
     BettingArea,
     ResultPopup,
   },
+  methods: {
+  ...AppLogic.methods,
+  handleClose() {
+    this.resetGame();  // Chama o método resetGame para resetar o estado do jogo
+  }
+}
 };
 </script>
 
 <style scoped>
 .v-app {
-  background-color: #1976D2;
+  background-color: #1976d2;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
 .v-app-bar {
-  background-color: #0D47A1 !important;
+  background-color: #0d47a1 !important;
   color: white;
 }
 
@@ -78,13 +90,13 @@ export default {
   font-size: 14px;
   color: white;
   background-color: #636363;
-  border: #0D47A1;
+  border: #0d47a1;
   border-radius: 20px;
   padding: 8px;
 }
 
 .v-navigation-drawer {
-  background-color: #BBDEFB;
+  background-color: #bbdefb;
 }
 
 .v-list-item {
@@ -108,4 +120,3 @@ export default {
   overflow-x: hidden;
 }
 </style>
-

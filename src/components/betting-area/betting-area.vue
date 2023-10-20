@@ -28,12 +28,10 @@
     </v-col>
 
     <v-col v-if="gameEnded" cols="12" sm="8" md="6">
-      {{ win ? "Você ganhou!" : "Você perdeu!" }}
       <v-btn block @click="resetHandler">Jogar novamente</v-btn>
     </v-col>
   </v-row>
 </template>
-
 
 <script>
 export default {
