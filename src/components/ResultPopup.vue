@@ -4,8 +4,6 @@
       <v-card-title class="headline">{{ title }}</v-card-title>
       <v-card-text v-if="win">{{ message }}</v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="green darken-1" text @click="close">Ok</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -60,7 +58,7 @@ export default {
             if (newVal) {
                 setTimeout(() => {
                     this.$emit('close');
-                }, 5000);  // Fechar o popup após 5 segundos
+                }, 2000);  // Fechar o popup após 5 segundos
             }
         },
     },

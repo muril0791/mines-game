@@ -11,15 +11,13 @@ export default {
       currentWinnings: 0.0,
       mineImage: require("@/assets/mine.png"),
       gemImage: require("@/assets/gem.png"),
-      multiplier: 1.100,
+      multiplier: 1.1,
       drawer: false,
-      
-      
     };
   },
 
   mounted() {
-    this.resetBoard();  // Reseta o tabuleiro ao padrão ao carregar a página
+    this.resetBoard(); // Reseta o tabuleiro ao padrão ao carregar a página
   },
 
   methods: {
@@ -38,8 +36,8 @@ export default {
       this.mines = mines;
       this.wallet -= bet;
       this.gameStarted = true;
-      this.multiplier = 1 + (mines - 2) * 0.05;  // Ajuste o multiplicador inicial com base na quantidade de minas
-      this.generateBoard();  // Gera um novo tabuleiro ao iniciar o jogo
+      this.multiplier = 1 + (mines - 2) * 0.05; // Ajuste o multiplicador inicial com base na quantidade de minas
+      this.generateBoard(); // Gera um novo tabuleiro ao iniciar o jogo
     },
 
     generateBoard() {
@@ -89,7 +87,8 @@ export default {
     },
 
     revealCell(cell) {
-      if (!this.gameStarted || this.gameEnded) {  // Verifica se o jogo foi iniciado
+      if (!this.gameStarted || this.gameEnded) {
+        // Verifica se o jogo foi iniciado
         return;
       }
       cell.revealed = true;
@@ -98,10 +97,13 @@ export default {
         this.win = false;
         this.currentWinnings = 0;
       } else {
-        this.multiplier += 0.01;  // Aumente o multiplicador a cada gema encontrada
+        this.multiplier += 0.01; // Aumente o multiplicador a cada gema encontrada
         this.currentWinnings = this.bet * this.multiplier;
-        const revealedCells = this.board.flat().filter(c => c.revealed && !c.hasMine);
-        if (revealedCells.length === (5 * 5) - this.mines) {  // Todas as gemas foram reveladas
+        const revealedCells = this.board
+          .flat()
+          .filter((c) => c.revealed && !c.hasMine);
+        if (revealedCells.length === 5 * 5 - this.mines) {
+          // Todas as gemas foram reveladas
           this.wallet += this.currentWinnings;
           this.gameEnded = true;
           this.win = true;
@@ -116,7 +118,7 @@ export default {
       this.wallet += this.currentWinnings;
       this.gameEnded = true;
       this.win = true;
-      console.log('Win:', this.win);  // Log de depuração
+      console.log("Win:", this.win); // Log de depuração
     },
 
     resetGame() {
@@ -124,8 +126,8 @@ export default {
       this.gameEnded = false;
       this.win = false;
       this.currentWinnings = 0;
-      this.multiplier = 1.100;
-      this.resetBoard();  // Reseta o tabuleiro ao padrão ao clicar em "Jogar novamente"
+      this.multiplier = 1.1;
+      this.resetBoard(); // Reseta o tabuleiro ao padrão ao clicar em "Jogar novamente"
     },
   },
 };
